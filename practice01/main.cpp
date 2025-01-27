@@ -84,6 +84,7 @@ int main() {
       nums.push_back(getInt("Please enter a whole number: "));
     }
     else if(menu==2){
+      //print numbers
       PrintVector(nums);
     }
     else if(menu==3){
