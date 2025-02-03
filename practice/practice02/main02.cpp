@@ -42,10 +42,22 @@ public:
 		amount = 100.00;
 	}
 	void SaveInfo() {
-		
+		std::ofstream file(filename); // Replace "example.txt" with your file name
+		file << amount;
+		file.close();
 	}
-	void GetFileInfo() {
-
+	int GetFileInfo() {
+		std::ifstream file(filename); // Replace "example.txt" with your file name
+		double fileAmount;
+		if (file.is_open()) {
+			file >> fileAmount;
+			file.close();
+			return 0;
+		}
+		else {
+			std::cout << "Unable to open file." << std::endl;
+			return 1;
+		}
 	}
 	double CheckBalance() {
 		return amount;
@@ -85,14 +97,20 @@ void
 	
 int main() {
 	int result;
+	double amount;
 	Bank userAccount;
-	userAccount.GetFileInfo();
+	result = userAccount.GetFileInfo();
 	std::cout << "Welcome to the bank" << std::endl;
-	std::cout << "The amount is $" << userAccount.CheckBalance() << "..." << std::endl;
+	if (result == 1) {
+		std::cout << "The amount is $" << userAccount.CheckBalance() << "..." << std::endl;
+	}
+	else if (result == 0) {
+		std::cout << "Your current balance is $" << userAccount.CheckBalance() << "." << std::endl;
+	}
 	while (true) {
 		result = main();
 		if (result == 1) {
-			userAccount.CheckBalance();
+			std::cout << "Your current balance is " << userAccount.CheckBalance() << "." << std::endl;
 		}
 		else if (result == 2) {
 			userAccount.Deposit();
@@ -101,11 +119,12 @@ int main() {
 			userAccount.WidthDraw();
 		}
 		else if (result == 4) {
-			return 1;
+			break;
 		}
 		else {
 			std::cout << "Invalid Input" << std::endl;
 		}
-
 	}
+	userAccount.SaveInfo();
+
 }
