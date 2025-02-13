@@ -6,16 +6,15 @@ class MathUtils {
 public:
     static int sumRange(int start, int end) {
         int sum = 0;
-        for (int i = start; i < end; i++) { // Bug: Off-by-one error
+        for (int i = start; i <= end; i++) { // Bug: Off-by-one error
             sum += i;
-            std::cout << i << std::endl;
         }
         return sum;
     }
 
     static bool containsNegative(const std::vector<int>& numbers) {
-        for (size_t i = 0; i <= numbers.size(); i++) { // Bug invalid type
-            if (numbers[i] > 0) { // Bug wrong value type to detect negative great for positives though
+        for (int i = 0; i <= numbers.size(); i++) { // Bug invalid type
+            if (numbers[i] < 0) { // Bug wrong value type to detect negative great for positives though
                 return true;
             }
         }
@@ -23,10 +22,10 @@ public:
     }
 
     static int findMax(const std::vector<int>& numbers) {
-        if (numbers.empty() == 1) return 0; // Bug
+        if (numbers.empty() == 1) return 0; // Bug 
         int maxVal = numbers[0];
-        for (size_t i = 1; i <= numbers.size(); i++) { // Bug invalid type
-            if (numbers[i] >= maxVal) { // Bug could be shorter.
+        for (int i = 1; i <= numbers.size(); i++) { // Bug invalid type
+            if (numbers[i] > maxVal) { // Bug should just be greater than.
                 maxVal = numbers[i];
             }
         }

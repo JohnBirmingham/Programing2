@@ -14,8 +14,8 @@ public:
   }
    
   static bool containsNegative(const std::vector<int>& numbers) {
-    for (size_t i = 0; i <= numbers.size(); i++) { // Bug invalid type
-      if (numbers[i] > 0) { // Bug wrong value type to detect negative great for positives though
+    for (size_t i = 0; i <= numbers.size(); i++) {
+      if (numbers[i] > 0) {
         return true;
       }
     }
@@ -23,10 +23,10 @@ public:
   }
    
   static int findMax(const std::vector<int>& numbers) {
-    if (numbers.empty()==1) return 0; // Bug
+    if (numbers.empty()) return 0; // Bug
     int maxVal = numbers[0];
-    for (size_t i = 1; i <= numbers.size(); i++) { // Bug invalid type
-      if (numbers[i] >= maxVal) { // Bug could be shorter.
+    for (size_t i = 1; i <= numbers.size(); i++) { // Bug
+      if (numbers[i] >= maxVal) { // Bug
         maxVal = numbers[i];
       }
     }
