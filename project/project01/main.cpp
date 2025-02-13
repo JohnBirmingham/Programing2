@@ -51,5 +51,5 @@ int GameStatus(int numbOfP1Pieces, int numbOfP2Pieces){
 }
 
 int main(){
-    std::vector<std::vector<int>> myBoard
+    std::vector<std::vector<int>> myBoard = MakeBoard(10);
 }
