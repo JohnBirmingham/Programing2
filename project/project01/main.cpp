@@ -6,8 +6,14 @@ enum gameState{
     P1Wins,
     P2Wins
 };
+enum piece{
+    blank,
+    White,
+    Black
+};
 int linesAfterBoard=1;
-int moveInput(std::string prompt){
+int linesOfInvalidInput=0;
+int BoardInput(std::string prompt){
     int input;
 	while (true) {
         linesAfterBoard++;
@@ -42,18 +48,20 @@ void PrintBoard(std::vector<std::vector<int>> &myBoard);
 void ChangeBoard(std::vector<std::vector<int>> &myBoard);
 std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard);
 int GameStatus(std::vector<std::vector<int>> &myBoard);
-void move(std::vector<std::vector<int>> &myBoard){
+void Move(std::vector<std::vector<int>> &myBoard, int pieceType){
     int newX;
     int newY;
     int prevX;
     int prevY;
     while(true){
-        prevX = moveInput("Enter the X cordinate you are coming from: ");
-        prevY = moveInput("Enter the Y cordinate you are coming from: ");
-        newX = moveInput("Enter the X cordinate you are going to: ");
-        newY = moveInput("Enter the Y cordinate you are going to: ");
+        prevX = BoardInput("Enter the X cordinate you are coming from: ");
+        prevY = BoardInput("Enter the Y cordinate you are coming from: ");
+        newX = BoardInput("Enter the X cordinate you are going to: ");
+        newY = BoardInput("Enter the Y cordinate you are going to: ");
         //checks to make sure move is valid
-        if((4>(newX-prevX+(newY-prevY))>-4)&&(myBoard.at(newY).at(newX)==0)){
+        if((4>((newX-prevX)+(newY-prevY))>-4)&&(myBoard.at(newY).at(newX)==0)&&(myBoard.at(prevY).at(prevX)!=0)&&(pieceType==myBoard.at(prevY).at(prevX))){
+            myBoard.at(newY).at(newX) = myBoard.at(prevY).at(prevX);
+            myBoard.at(prevY).at(prevX) = 0;
             break;
         } else {
             linesAfterBoard++;
@@ -62,33 +70,16 @@ void move(std::vector<std::vector<int>> &myBoard){
     }
 }
 /*
-void Play(std::vector<std::vector<int>> &myBoard, int newX, int newY, int prevX, int prevY, bool attacking){
+void Play(std::vector<std::vector<int>> &myBoard){
     int gameState=ongoing;
-    while(gameState=ongoing){
+    bool attacking==false;
+    while(gameState==ongoing){
         //checks for attack
         if(attacking==false){
-            //checks to see if the player is in range of board
-            if((-1<newX<10)&&(-1<newY<10)){
-                //checks to make sure move is valid
-                if(2>(newX-prevX+(newY-prevY))>-2){
             
-                }
-            }
-            else{
-            
-            }
         }
         else{
-            //checks to see if the player is in range of board
-            if((-1<newX<10)&&(-1<newY<10)){
-                //checks for valid attack spaces
-                if(1>(newX-prevX+(newY-prevY))>-1){
             
-                }
-            }
-            else{
-
-            }
         }
     }
 }
@@ -99,9 +90,7 @@ int main(){
     SetUpBoard(myBoard);
     PrintBoard(myBoard);
     GameStatus(myBoard);
-    linesAfterBoard++;
-    std::cout << "Press Enter to continue...";
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    Move(myBoard, White);
     ChangeBoard(myBoard);
 }
 
