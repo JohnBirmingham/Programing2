@@ -12,35 +12,7 @@ enum piece{
     Black
 };
 int linesAfterBoard=1;
-int linesOfInvalidInput=0;
-int BoardInput(std::string prompt){
-    int input;
-	while (true) {
-        linesAfterBoard++;
-		std::cout << prompt;
-		std::cin >> input;
-		if (std::cin.fail()) {
-            linesAfterBoard++;
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			std::cout << "Invalid input. Please enter an integer.\n";
-		} else if(std::cin.peek() != '\n'){
-            linesAfterBoard++;
-            std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Too many inputs. Please only use one input" << std::endl;
-        } else {
-			std::cin.ignore();
-            if(-1<input<10){
-                return input;
-            } else {
-                linesAfterBoard++;
-                std::cout << "That move is not in the board" << std::endl;
-            }
-		}
-	}
-    
-}
+int BoardInput(std::string prompt);
 std::vector<std::vector<int>> MakeBoard(int size);
 void SetUpBoard(std::vector<std::vector<int>> &myBoard);
 void PrintRules();
@@ -48,20 +20,23 @@ void PrintBoard(std::vector<std::vector<int>> &myBoard);
 void ChangeBoard(std::vector<std::vector<int>> &myBoard);
 std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard);
 int GameStatus(std::vector<std::vector<int>> &myBoard);
-void Move(std::vector<std::vector<int>> &myBoard, int pieceType){
-    int newX;
-    int newY;
-    int prevX;
-    int prevY;
+void Move(std::vector<std::vector<int>> &myBoard, int pieceType);
+void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
+    int Xopp;
+    int Yopp;
+    int Xpos;
+    int Ypos;
     while(true){
-        prevX = BoardInput("Enter the X cordinate you are coming from: ");
-        prevY = BoardInput("Enter the Y cordinate you are coming from: ");
-        newX = BoardInput("Enter the X cordinate you are going to: ");
-        newY = BoardInput("Enter the Y cordinate you are going to: ");
+        Xpos = BoardInput("Enter the X cordinate you are attacking from: ");
+        Ypos = BoardInput("Enter the Y cordinate you are attacking from: ");
+        Xopp = BoardInput("Enter the X cordinate you are going to attack: ");
+        Yopp = BoardInput("Enter the Y cordinate you are going to attack: ");
         //checks to make sure move is valid
-        if((4>((newX-prevX)+(newY-prevY))>-4)&&(myBoard.at(newY).at(newX)==0)&&(myBoard.at(prevY).at(prevX)!=0)&&(pieceType==myBoard.at(prevY).at(prevX))){
-            myBoard.at(newY).at(newX) = myBoard.at(prevY).at(prevX);
-            myBoard.at(prevY).at(prevX) = 0;
+        if((pieceType==myBoard.at(Ypos).at(Xpos))){
+            linesAfterBoard++;
+            std::cout << "Not attacking with the right piece." << std::endl;
+        } else if((2>((Xopp-Xpos)+(Yopp-Ypos))>-2)&&(myBoard.at(Yopp).at(Xopp)==0)){
+            
             break;
         } else {
             linesAfterBoard++;
@@ -92,6 +67,43 @@ int main(){
     GameStatus(myBoard);
     Move(myBoard, White);
     ChangeBoard(myBoard);
+    Move(myBoard, Black);
+    ChangeBoard(myBoard);
+    Move(myBoard, White);
+    ChangeBoard(myBoard);
+    Move(myBoard, Black);
+    ChangeBoard(myBoard);
+    Attack(myBoard, White);
+    ChangeBoard(myBoard);
+}
+
+int BoardInput(std::string prompt){
+    int input;
+    linesAfterBoard++;
+	while (true) {
+        linesAfterBoard++;
+		std::cout << prompt;
+		std::cin >> input;
+		if (std::cin.fail()) {
+            linesAfterBoard++;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "Invalid input. Please enter an integer.\n";
+		} else if(std::cin.peek() != '\n'){
+            linesAfterBoard++;
+            std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Too many inputs. Please only use one input" << std::endl;
+        } else {
+			std::cin.ignore();
+            if(-1<input<10){
+                return input;
+            } else {
+                linesAfterBoard++;
+                std::cout << "That move is not in the board" << std::endl;
+            }
+		}
+	}
 }
 
 std::vector<std::vector<int>> MakeBoard(int size){
@@ -186,5 +198,30 @@ int GameStatus(std::vector<std::vector<int>> &myBoard){
         return P2Wins;
     } else {
         return ongoing;
+    }
+}
+
+void Move(std::vector<std::vector<int>> &myBoard, int pieceType){
+    int newX;
+    int newY;
+    int prevX;
+    int prevY;
+    while(true){
+        prevX = BoardInput("Enter the X cordinate you are coming from: ");
+        prevY = BoardInput("Enter the Y cordinate you are coming from: ");
+        newX = BoardInput("Enter the X cordinate you are going to: ");
+        newY = BoardInput("Enter the Y cordinate you are going to: ");
+        //checks to make sure move is valid
+        if((pieceType==myBoard.at(prevY).at(prevX))){
+            linesAfterBoard++;
+            std::cout << "Not moving the right piece." << std::endl;
+        } else if((4>((newX-prevX)+(newY-prevY))>-4)&&(myBoard.at(newY).at(newX)==0)){
+            myBoard.at(newY).at(newX) = myBoard.at(prevY).at(prevX);
+            myBoard.at(prevY).at(prevX) = 0;
+            break;
+        } else {
+            linesAfterBoard++;
+            std::cout << "Invalid move." << std::endl;
+        }
     }
 }
