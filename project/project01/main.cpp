@@ -1,5 +1,12 @@
 #include <iostream>
 #include <vector>
+
+enum gameState{
+    ongoing,
+    P1Wins,
+    P2Wins
+};
+
 std::vector<std::vector<int>> MakeBoard(int size){
     std::vector<int> row;
     std::vector<std::vector<int>> Board;
@@ -12,7 +19,45 @@ std::vector<std::vector<int>> MakeBoard(int size){
     return Board;
 }
 
-int Play(int newX, int newY, int prevX, int prevY, bool attacking){
+void SetUpBoard(std::vector<std::vector<int>> &myBoard){
+    for(int i = 4; i < myBoard.size()-4; i++){
+        myBoard.at(0).at(i)=2;
+    }
+    for(int i = 4; i < myBoard.size()-4; i++){
+        myBoard.at(1).at(i)=2;
+    }
+    for(int i = 4; i < myBoard.size()-4; i++){
+        myBoard.at(myBoard.size()-2).at(i)=1;
+    }
+    for(int i = 4; i < myBoard.size()-4; i++){
+        myBoard.at(myBoard.size()-1).at(i)=1;
+    }
+}
+
+void PrintBoard(std::vector<std::vector<int>> &myBoard){
+    int i = 0;
+    std::cout << ' ';
+    for(int z = 0; z < myBoard.size(); z++){
+        std::cout << ' ' << z;
+    }
+    std::cout << '\n';
+    for(std::vector<int> row : myBoard){
+        std::cout << i;
+        for(int num : row){
+            if(num==0){
+                std::cout << "| ";
+            } else if(num==1){
+                std::cout << "|W";
+            } else if(num==2){
+                std::cout << "|B";
+            }
+        }
+        std::cout << '\n';
+        i++;
+    }
+}
+/*
+void Play(std::vector<std::vector<int>> myBoard, int newX, int newY, int prevX, int prevY, bool attacking){
     //checks for attack
     if(attacking==false){
         //checks to see if the player is in range of board
@@ -41,15 +86,17 @@ int Play(int newX, int newY, int prevX, int prevY, bool attacking){
 }
 
 int GameStatus(int numbOfP1Pieces, int numbOfP2Pieces){
-    enum gameState{
-        ongoing,
-        P1Wins,
-        P2Wins
-    };
-    if()
-    return 
+    if(numbOfP1Pieces == 0){
+        return P1Wins;
+    } else if(numbOfP2Pieces == 0){
+        return P2Wins;
+    } else {
+        return ongoing;
+    }
 }
-
+*/
 int main(){
     std::vector<std::vector<int>> myBoard = MakeBoard(10);
+    SetUpBoard(myBoard);
+    PrintBoard(myBoard);
 }
