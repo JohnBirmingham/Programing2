@@ -22,30 +22,35 @@ void ChangeBoard(std::vector<std::vector<int>> &myBoard);
 std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard);
 int GameStatus(std::vector<std::vector<int>> &myBoard);
 void Move(std::vector<std::vector<int>> &myBoard, int pieceType);
-/*void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
+//bool ValidAttack(std::vector<std::vector<int>> &myBoard, int pieceType){}
+void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
     int Xopp;
     int Yopp;
     int Xpos;
     int Ypos;
+    int attackRange=2;
     while(true){
         Xpos = BoardInput("Enter the X cordinate you are attacking from: ");
         Ypos = BoardInput("Enter the Y cordinate you are attacking from: ");
         Xopp = BoardInput("Enter the X cordinate you are going to attack: ");
         Yopp = BoardInput("Enter the Y cordinate you are going to attack: ");
         //checks to make sure move is valid
-        if((pieceType==myBoard.at(Ypos).at(Xpos))){
+        if((pieceType==myBoard.at(Yopp).at(Xopp))){
             linesAfterBoard++;
             std::cout << "Not attacking with the right piece." << std::endl;
-        } else if((2>((Xopp-Xpos)+(Yopp-Ypos))>-2)&&(myBoard.at(Yopp).at(Xopp)==0)){
-            
+        } else if(myBoard.at(Yopp).at(Xopp)==0){
+            linesAfterBoard++;
+            std::cout << "Not a valid enemy" << std::endl;
+        } else if((attackRange>(abs(Xopp-Xpos)+abs(Yopp-Ypos)))&&(myBoard.at(Yopp).at(Xopp)=!pieceType)){
+            myBoard.at(Yopp).at(Xopp)=0;
             break;
         } else {
             linesAfterBoard++;
-            std::cout << "Invalid move." << std::endl;
+            std::cout << "Invalid attack." << std::endl;
         }
     }
 }
-
+/*
 void Play(std::vector<std::vector<int>> &myBoard){
     int gameState=ongoing;
     bool attacking==false;
@@ -74,11 +79,11 @@ int main(){
     ChangeBoard(myBoard);
     Move(myBoard, Black);
     ChangeBoard(myBoard);
+    Attack(myBoard, White);
 }
 
 int BoardInput(std::string prompt){
     int input;
-    linesAfterBoard++;
 	while (true) {
         linesAfterBoard++;
 		std::cout << prompt;
