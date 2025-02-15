@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <limits>
+#include <cmath>
 enum gameState{
     ongoing,
     P1Wins,
@@ -21,7 +22,7 @@ void ChangeBoard(std::vector<std::vector<int>> &myBoard);
 std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard);
 int GameStatus(std::vector<std::vector<int>> &myBoard);
 void Move(std::vector<std::vector<int>> &myBoard, int pieceType);
-void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
+/*void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
     int Xopp;
     int Yopp;
     int Xpos;
@@ -44,7 +45,7 @@ void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
         }
     }
 }
-/*
+
 void Play(std::vector<std::vector<int>> &myBoard){
     int gameState=ongoing;
     bool attacking==false;
@@ -72,8 +73,6 @@ int main(){
     Move(myBoard, White);
     ChangeBoard(myBoard);
     Move(myBoard, Black);
-    ChangeBoard(myBoard);
-    Attack(myBoard, White);
     ChangeBoard(myBoard);
 }
 
@@ -212,10 +211,10 @@ void Move(std::vector<std::vector<int>> &myBoard, int pieceType){
         newX = BoardInput("Enter the X cordinate you are going to: ");
         newY = BoardInput("Enter the Y cordinate you are going to: ");
         //checks to make sure move is valid
-        if((pieceType==myBoard.at(prevY).at(prevX))){
+        if((pieceType=!myBoard.at(prevY).at(prevX))){
             linesAfterBoard++;
             std::cout << "Not moving the right piece." << std::endl;
-        } else if((4>((newX-prevX)+(newY-prevY))>-4)&&(myBoard.at(newY).at(newX)==0)){
+        } else if((2>=(abs(prevX-newX)+abs(prevY-newY)))&&(myBoard.at(newY).at(newX)==0)){
             myBoard.at(newY).at(newX) = myBoard.at(prevY).at(prevX);
             myBoard.at(prevY).at(prevX) = 0;
             break;
