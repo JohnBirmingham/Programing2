@@ -37,11 +37,11 @@ void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
         //checks to make sure move is valid
         if((pieceType==myBoard.at(Yopp).at(Xopp))){
             linesAfterBoard++;
-            std::cout << "Not attacking with the right piece." << std::endl;
+            std::cout << "Not attacking the right piece." << std::endl;
         } else if(myBoard.at(Yopp).at(Xopp)==0){
             linesAfterBoard++;
             std::cout << "Not a valid enemy" << std::endl;
-        } else if((attackRange>(abs(Xopp-Xpos)+abs(Yopp-Ypos)))&&(myBoard.at(Yopp).at(Xopp)=!pieceType)){
+        } else if((attackRange>(abs(Xopp-Xpos)+abs(Yopp-Ypos)))){
             myBoard.at(Yopp).at(Xopp)=0;
             break;
         } else {
@@ -80,6 +80,7 @@ int main(){
     Move(myBoard, Black);
     ChangeBoard(myBoard);
     Attack(myBoard, White);
+    ChangeBoard(myBoard);
 }
 
 int BoardInput(std::string prompt){
@@ -216,7 +217,7 @@ void Move(std::vector<std::vector<int>> &myBoard, int pieceType){
         newX = BoardInput("Enter the X cordinate you are going to: ");
         newY = BoardInput("Enter the Y cordinate you are going to: ");
         //checks to make sure move is valid
-        if((pieceType=!myBoard.at(prevY).at(prevX))){
+        if((pieceType!=myBoard.at(prevY).at(prevX))){
             linesAfterBoard++;
             std::cout << "Not moving the right piece." << std::endl;
         } else if((2>=(abs(prevX-newX)+abs(prevY-newY)))&&(myBoard.at(newY).at(newX)==0)){
