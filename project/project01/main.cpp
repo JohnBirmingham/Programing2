@@ -23,7 +23,9 @@ void ChangeBoard(std::vector<std::vector<int>> &myBoard);
 std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard);
 int GameStatus(std::vector<std::vector<int>> &myBoard);
 void Move(std::vector<std::vector<int>> &myBoard, int pieceType);
-//bool ValidAttack(std::vector<std::vector<int>> &myBoard, int pieceType){}
+bool ValidAttack(std::vector<std::vector<int>> &myBoard, int pieceType){
+    bool attack
+}
 void Attack(std::vector<std::vector<int>> &myBoard, int pieceType);
 
 void Play(std::vector<std::vector<int>> &myBoard){
@@ -31,6 +33,7 @@ void Play(std::vector<std::vector<int>> &myBoard){
     bool attacking=false;
     int pieceType=White;
     while(gameState==ongoing){
+        attacking=ValidAttack(myBoard, pieceType);
         if(attacking==false){
             Move(myBoard,pieceType);
         }
