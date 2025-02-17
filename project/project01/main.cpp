@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <limits>
 #include <cmath>
@@ -12,7 +13,7 @@ enum piece{
     White,
     Black
 };
-int linesAfterBoard=1;
+int linesAfterBoard=0;
 int BoardInput(std::string prompt);
 std::vector<std::vector<int>> MakeBoard(int size);
 void SetUpBoard(std::vector<std::vector<int>> &myBoard);
@@ -23,64 +24,34 @@ std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard);
 int GameStatus(std::vector<std::vector<int>> &myBoard);
 void Move(std::vector<std::vector<int>> &myBoard, int pieceType);
 //bool ValidAttack(std::vector<std::vector<int>> &myBoard, int pieceType){}
-void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
-    int Xopp;
-    int Yopp;
-    int Xpos;
-    int Ypos;
-    int attackRange=2;
-    while(true){
-        Xpos = BoardInput("Enter the X cordinate you are attacking from: ");
-        Ypos = BoardInput("Enter the Y cordinate you are attacking from: ");
-        Xopp = BoardInput("Enter the X cordinate you are going to attack: ");
-        Yopp = BoardInput("Enter the Y cordinate you are going to attack: ");
-        //checks to make sure move is valid
-        if((pieceType==myBoard.at(Yopp).at(Xopp))){
-            linesAfterBoard++;
-            std::cout << "Not attacking the right piece." << std::endl;
-        } else if(myBoard.at(Yopp).at(Xopp)==0){
-            linesAfterBoard++;
-            std::cout << "Not a valid enemy" << std::endl;
-        } else if((attackRange>(abs(Xopp-Xpos)+abs(Yopp-Ypos)))){
-            myBoard.at(Yopp).at(Xopp)=0;
-            break;
-        } else {
-            linesAfterBoard++;
-            std::cout << "Invalid attack." << std::endl;
-        }
-    }
-}
-/*
+void Attack(std::vector<std::vector<int>> &myBoard, int pieceType);
+
 void Play(std::vector<std::vector<int>> &myBoard){
     int gameState=ongoing;
-    bool attacking==false;
+    bool attacking=false;
+    int pieceType=White;
     while(gameState==ongoing){
-        //checks for attack
         if(attacking==false){
-            
+            Move(myBoard,pieceType);
         }
         else{
-            
+            Attack(myBoard, pieceType);
         }
+        ChangeBoard(myBoard);
+        if(pieceType==White){
+            pieceType=Black;
+        } else if(pieceType==Black){
+            pieceType=White;
+        }
+        gameState=GameStatus(myBoard);
     }
 }
-*/
+
 int main(){
     std::vector<std::vector<int>> myBoard = MakeBoard(10);
-    PrintRules();
     SetUpBoard(myBoard);
     PrintBoard(myBoard);
-    GameStatus(myBoard);
-    Move(myBoard, White);
-    ChangeBoard(myBoard);
-    Move(myBoard, Black);
-    ChangeBoard(myBoard);
-    Move(myBoard, White);
-    ChangeBoard(myBoard);
-    Move(myBoard, Black);
-    ChangeBoard(myBoard);
-    Attack(myBoard, White);
-    ChangeBoard(myBoard);
+    Play(myBoard);
 }
 
 int BoardInput(std::string prompt){
@@ -100,11 +71,12 @@ int BoardInput(std::string prompt){
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Too many inputs. Please only use one input" << std::endl;
         } else {
-			std::cin.ignore();
-            if(-1<input<10){
+            if((-1<input)&&(input<10)){
                 return input;
             } else {
                 linesAfterBoard++;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "That move is not in the board" << std::endl;
             }
 		}
@@ -133,21 +105,22 @@ void PrintRules(){
 
 void SetUpBoard(std::vector<std::vector<int>> &myBoard){
     for(int i = 4; i < myBoard.size()-4; i++){
-        myBoard.at(0).at(i)=2;
+        myBoard.at(0).at(i)=Black;
     }
     for(int i = 4; i < myBoard.size()-4; i++){
-        myBoard.at(1).at(i)=2;
+        myBoard.at(1).at(i)=Black;
     }
     for(int i = 4; i < myBoard.size()-4; i++){
-        myBoard.at(myBoard.size()-2).at(i)=1;
+        myBoard.at(myBoard.size()-2).at(i)=White;
     }
     for(int i = 4; i < myBoard.size()-4; i++){
-        myBoard.at(myBoard.size()-1).at(i)=1;
+        myBoard.at(myBoard.size()-1).at(i)=White;
     }
 }
 
 void PrintBoard(std::vector<std::vector<int>> &myBoard){
     int i = 0;
+    PrintRules();
     std::cout << ' ';
     for(int z = 0; z < myBoard.size(); z++){
         std::cout << ' ' << z;
@@ -170,11 +143,12 @@ void PrintBoard(std::vector<std::vector<int>> &myBoard){
 }
 
 void ChangeBoard(std::vector<std::vector<int>> &myBoard){
-    for(int i = 0; i < myBoard.size()+linesAfterBoard; i++){
-        std::cout << "\033[F\033[K";
-    }
+    #ifdef _WIN32
+        system("cls"); // For Windows
+    #else
+        system("clear"); // For Linux and macOS
+    #endif
     PrintBoard(myBoard);
-    linesAfterBoard=1;
 }
 
 std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard){
@@ -227,6 +201,34 @@ void Move(std::vector<std::vector<int>> &myBoard, int pieceType){
         } else {
             linesAfterBoard++;
             std::cout << "Invalid move." << std::endl;
+        }
+    }
+}
+
+void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
+    int Xopp;
+    int Yopp;
+    int Xpos;
+    int Ypos;
+    int attackRange=2;
+    while(true){
+        Xpos = BoardInput("Enter the X cordinate you are attacking from: ");
+        Ypos = BoardInput("Enter the Y cordinate you are attacking from: ");
+        Xopp = BoardInput("Enter the X cordinate you are going to attack: ");
+        Yopp = BoardInput("Enter the Y cordinate you are going to attack: ");
+        //checks to make sure move is valid
+        if(pieceType==myBoard.at(Yopp).at(Xopp)){
+            linesAfterBoard++;
+            std::cout << "Not attacking the right piece." << std::endl;
+        } else if(myBoard.at(Yopp).at(Xopp)==0){
+            linesAfterBoard++;
+            std::cout << "Not a valid enemy" << std::endl;
+        } else if((attackRange>(abs(Xopp-Xpos)+abs(Yopp-Ypos)))){
+            myBoard.at(Yopp).at(Xopp)=0;
+            break;
+        } else {
+            linesAfterBoard++;
+            std::cout << "Invalid attack." << std::endl;
         }
     }
 }
