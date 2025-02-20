@@ -13,7 +13,7 @@ enum piece{
     White,
     Black
 };
-int linesAfterBoard=0;
+int attackRange=1;
 int BoardInput(std::string prompt);
 std::vector<std::vector<int>> MakeBoard(int size);
 void SetUpBoard(std::vector<std::vector<int>> &myBoard);
@@ -23,32 +23,77 @@ void ChangeBoard(std::vector<std::vector<int>> &myBoard);
 std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard);
 int GameStatus(std::vector<std::vector<int>> &myBoard);
 void Move(std::vector<std::vector<int>> &myBoard, int pieceType);
+bool CheckAttack(std::string prompt){
+    std::string input;
+    while (true) {
+		std::cout << prompt;
+		std::cin >> input;
+		if (std::cin.fail()) {
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "Invalid input. Please enter yes, y, no, or n.\n";
+		} else if(std::cin.peek() != '\n'){
+            std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Too many inputs. Please only use one input" << std::endl;
+        } else {
+            if(("yes"==input)||("y"==input)){
+                return true;
+            } else if(("no"==input)||("n"==input)){
+                return false;
+            } else {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Invalid Input" << std::endl;
+            }
+		}
+	}
+}
 bool ValidAttack(std::vector<std::vector<int>> &myBoard, int pieceType){
-    bool attack
-}
-void Attack(std::vector<std::vector<int>> &myBoard, int pieceType);
-
-void Play(std::vector<std::vector<int>> &myBoard){
-    int gameState=ongoing;
-    bool attacking=false;
-    int pieceType=White;
-    while(gameState==ongoing){
-        attacking=ValidAttack(myBoard, pieceType);
-        if(attacking==false){
-            Move(myBoard,pieceType);
+    int justInCase;
+    for(int i=0; i<myBoard.size(); i++){
+        for(int z=0; z<myBoard.size(); z++){
+            if(pieceType==myBoard.at(i).at(z)){
+                if(i - attackRange >= 0){
+                    if((blank==myBoard.at(i-attackRange).at(z))){
+                        justInCase++;
+                        //not doing anything. 0 catch
+                    } else if(pieceType!=myBoard.at(i-attackRange).at(z)){
+                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
+                    }
+                } 
+                if(i + attackRange < 10){
+                    if(blank==myBoard.at(i+attackRange).at(z)){
+                        justInCase++;
+                        //not doing anything. 0 catch
+                    } else if(pieceType!=myBoard.at(i+attackRange).at(z)){
+                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
+                    }
+                }
+                if(z - attackRange >= 0){
+                    if(blank==myBoard.at(i).at(z-attackRange)){
+                        justInCase++;
+                        //not doing anything. 0 catch
+                    } else if(pieceType!=myBoard.at(i).at(z-attackRange)){
+                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
+                    }
+                }
+                if(z + attackRange < 10){
+                    if(blank==myBoard.at(i).at(z+attackRange)){
+                        justInCase++;
+                        //not doing anything. 0 catch
+                    } else if(pieceType!=myBoard.at(i).at(z+attackRange)){
+                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
+                    }
+                }
+            }
         }
-        else{
-            Attack(myBoard, pieceType);
-        }
-        ChangeBoard(myBoard);
-        if(pieceType==White){
-            pieceType=Black;
-        } else if(pieceType==Black){
-            pieceType=White;
-        }
-        gameState=GameStatus(myBoard);
     }
+    return false;
 }
+
+void Attack(std::vector<std::vector<int>> &myBoard, int pieceType);
+void Play(std::vector<std::vector<int>> &myBoard);
 
 int main(){
     std::vector<std::vector<int>> myBoard = MakeBoard(10);
@@ -60,16 +105,13 @@ int main(){
 int BoardInput(std::string prompt){
     int input;
 	while (true) {
-        linesAfterBoard++;
 		std::cout << prompt;
 		std::cin >> input;
 		if (std::cin.fail()) {
-            linesAfterBoard++;
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cout << "Invalid input. Please enter an integer.\n";
 		} else if(std::cin.peek() != '\n'){
-            linesAfterBoard++;
             std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Too many inputs. Please only use one input" << std::endl;
@@ -77,7 +119,6 @@ int BoardInput(std::string prompt){
             if((-1<input)&&(input<10)){
                 return input;
             } else {
-                linesAfterBoard++;
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "That move is not in the board" << std::endl;
@@ -107,6 +148,13 @@ void PrintRules(){
 }
 
 void SetUpBoard(std::vector<std::vector<int>> &myBoard){
+    /*myBoard.at(8).at(6)=2;
+    myBoard.at(8).at(8)=2;
+    myBoard.at(9).at(8)=1;
+    myBoard.at(5).at(8)=1;
+    myBoard.at(4).at(8)=2;
+    myBoard.at(6).at(2)=1;
+    myBoard.at(6).at(3)=2;*/
     for(int i = 4; i < myBoard.size()-4; i++){
         myBoard.at(0).at(i)=Black;
     }
@@ -195,14 +243,12 @@ void Move(std::vector<std::vector<int>> &myBoard, int pieceType){
         newY = BoardInput("Enter the Y cordinate you are going to: ");
         //checks to make sure move is valid
         if((pieceType!=myBoard.at(prevY).at(prevX))){
-            linesAfterBoard++;
             std::cout << "Not moving the right piece." << std::endl;
-        } else if((2>=(abs(prevX-newX)+abs(prevY-newY)))&&(myBoard.at(newY).at(newX)==0)){
+        } else if((2>=(abs(prevX-newX)+abs(prevY-newY)))&&(myBoard.at(newY).at(newX)==blank)){
             myBoard.at(newY).at(newX) = myBoard.at(prevY).at(prevX);
             myBoard.at(prevY).at(prevX) = 0;
             break;
         } else {
-            linesAfterBoard++;
             std::cout << "Invalid move." << std::endl;
         }
     }
@@ -213,7 +259,6 @@ void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
     int Yopp;
     int Xpos;
     int Ypos;
-    int attackRange=2;
     while(true){
         Xpos = BoardInput("Enter the X cordinate you are attacking from: ");
         Ypos = BoardInput("Enter the Y cordinate you are attacking from: ");
@@ -221,17 +266,37 @@ void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
         Yopp = BoardInput("Enter the Y cordinate you are going to attack: ");
         //checks to make sure move is valid
         if(pieceType==myBoard.at(Yopp).at(Xopp)){
-            linesAfterBoard++;
             std::cout << "Not attacking the right piece." << std::endl;
-        } else if(myBoard.at(Yopp).at(Xopp)==0){
-            linesAfterBoard++;
+        } else if(myBoard.at(Yopp).at(Xopp)==blank){
             std::cout << "Not a valid enemy" << std::endl;
-        } else if((attackRange>(abs(Xopp-Xpos)+abs(Yopp-Ypos)))){
-            myBoard.at(Yopp).at(Xopp)=0;
+        } else if((attackRange>=(abs(Xopp-Xpos)+abs(Yopp-Ypos)))){
+            myBoard.at(Yopp).at(Xopp)=blank;
             break;
         } else {
-            linesAfterBoard++;
             std::cout << "Invalid attack." << std::endl;
         }
     }
+}
+
+void Play(std::vector<std::vector<int>> &myBoard){
+    int gameState=ongoing;
+    bool attacking=false;
+    int pieceType=White;
+    while(gameState==ongoing){
+        attacking=ValidAttack(myBoard, pieceType);
+        if(attacking==false){
+            Move(myBoard, pieceType);
+        }
+        else{
+            Attack(myBoard, pieceType);
+        }
+        ChangeBoard(myBoard);
+        if(pieceType==White){
+            pieceType=Black;
+        } else if(pieceType==Black){
+            pieceType=White;
+        }
+        gameState=GameStatus(myBoard);
+    }
+    std::cout << "Player " << gameState << "wins" << std::endl;
 }
