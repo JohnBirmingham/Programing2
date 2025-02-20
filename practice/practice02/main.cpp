@@ -1,6 +1,6 @@
-import <iostream>;
-import <fstream>;
-import <vector>;
+#include <iostream>;
+#include <fstream>;
+#include <vector>;
 
 int getInt(const std::string& prompt) {
 	int input;
