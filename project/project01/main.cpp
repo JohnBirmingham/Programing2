@@ -97,9 +97,15 @@ void Play(std::vector<std::vector<int>> &myBoard);
 
 int main(){
     std::vector<std::vector<int>> myBoard = MakeBoard(10);
-    SetUpBoard(myBoard);
-    PrintBoard(myBoard);
-    Play(myBoard);
+    bool noMore;
+    while(true){
+        Play(myBoard);
+        noMore = CheckAttack("Do you want to continue? ");
+        if(noMore==true){
+            std::cout << "Thank you for playing." << std::endl;
+            break;
+        }
+    }
 }
 
 int BoardInput(std::string prompt){
@@ -282,6 +288,8 @@ void Play(std::vector<std::vector<int>> &myBoard){
     int gameState=ongoing;
     bool attacking=false;
     int pieceType=White;
+    SetUpBoard(myBoard);
+    PrintBoard(myBoard);
     while(gameState==ongoing){
         attacking=ValidAttack(myBoard, pieceType);
         if(attacking==false){
