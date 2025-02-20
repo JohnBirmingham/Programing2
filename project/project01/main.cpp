@@ -23,75 +23,8 @@ void ChangeBoard(std::vector<std::vector<int>> &myBoard);
 std::vector<int> CheckNumOfPieces(std::vector<std::vector<int>> &myBoard);
 int GameStatus(std::vector<std::vector<int>> &myBoard);
 void Move(std::vector<std::vector<int>> &myBoard, int pieceType);
-bool CheckAttack(std::string prompt){
-    std::string input;
-    while (true) {
-		std::cout << prompt;
-		std::cin >> input;
-		if (std::cin.fail()) {
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			std::cout << "Invalid input. Please enter yes, y, no, or n.\n";
-		} else if(std::cin.peek() != '\n'){
-            std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Too many inputs. Please only use one input" << std::endl;
-        } else {
-            if(("yes"==input)||("y"==input)){
-                return true;
-            } else if(("no"==input)||("n"==input)){
-                return false;
-            } else {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "Invalid Input" << std::endl;
-            }
-		}
-	}
-}
-bool ValidAttack(std::vector<std::vector<int>> &myBoard, int pieceType){
-    int justInCase;
-    for(int i=0; i<myBoard.size(); i++){
-        for(int z=0; z<myBoard.size(); z++){
-            if(pieceType==myBoard.at(i).at(z)){
-                if(i - attackRange >= 0){
-                    if((blank==myBoard.at(i-attackRange).at(z))){
-                        justInCase++;
-                        //not doing anything. 0 catch
-                    } else if(pieceType!=myBoard.at(i-attackRange).at(z)){
-                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
-                    }
-                } 
-                if(i + attackRange < 10){
-                    if(blank==myBoard.at(i+attackRange).at(z)){
-                        justInCase++;
-                        //not doing anything. 0 catch
-                    } else if(pieceType!=myBoard.at(i+attackRange).at(z)){
-                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
-                    }
-                }
-                if(z - attackRange >= 0){
-                    if(blank==myBoard.at(i).at(z-attackRange)){
-                        justInCase++;
-                        //not doing anything. 0 catch
-                    } else if(pieceType!=myBoard.at(i).at(z-attackRange)){
-                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
-                    }
-                }
-                if(z + attackRange < 10){
-                    if(blank==myBoard.at(i).at(z+attackRange)){
-                        justInCase++;
-                        //not doing anything. 0 catch
-                    } else if(pieceType!=myBoard.at(i).at(z+attackRange)){
-                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
-                    }
-                }
-            }
-        }
-    }
-    return false;
-}
-
+bool CheckAttack(std::string prompt);
+bool ValidAttack(std::vector<std::vector<int>> &myBoard, int pieceType);
 void Attack(std::vector<std::vector<int>> &myBoard, int pieceType);
 void Play(std::vector<std::vector<int>> &myBoard);
 
@@ -258,6 +191,76 @@ void Move(std::vector<std::vector<int>> &myBoard, int pieceType){
             std::cout << "Invalid move." << std::endl;
         }
     }
+}
+
+bool CheckAttack(std::string prompt){
+    std::string input;
+    while (true) {
+		std::cout << prompt;
+		std::cin >> input;
+		if (std::cin.fail()) {
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "Invalid input. Please enter yes, y, no, or n.\n";
+		} else if(std::cin.peek() != '\n'){
+            std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Too many inputs. Please only use one input" << std::endl;
+        } else {
+            if(("yes"==input)||("y"==input)){
+                return true;
+            } else if(("no"==input)||("n"==input)){
+                return false;
+            } else {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Invalid Input" << std::endl;
+            }
+		}
+	}
+}
+
+bool ValidAttack(std::vector<std::vector<int>> &myBoard, int pieceType){
+    int justInCase;
+    for(int i=0; i<myBoard.size(); i++){
+        for(int z=0; z<myBoard.size(); z++){
+            if(pieceType==myBoard.at(i).at(z)){
+                if(i - attackRange >= 0){
+                    if((blank==myBoard.at(i-attackRange).at(z))){
+                        justInCase++;
+                        //not doing anything. 0 catch
+                    } else if(pieceType!=myBoard.at(i-attackRange).at(z)){
+                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
+                    }
+                } 
+                if(i + attackRange < 10){
+                    if(blank==myBoard.at(i+attackRange).at(z)){
+                        justInCase++;
+                        //not doing anything. 0 catch
+                    } else if(pieceType!=myBoard.at(i+attackRange).at(z)){
+                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
+                    }
+                }
+                if(z - attackRange >= 0){
+                    if(blank==myBoard.at(i).at(z-attackRange)){
+                        justInCase++;
+                        //not doing anything. 0 catch
+                    } else if(pieceType!=myBoard.at(i).at(z-attackRange)){
+                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
+                    }
+                }
+                if(z + attackRange < 10){
+                    if(blank==myBoard.at(i).at(z+attackRange)){
+                        justInCase++;
+                        //not doing anything. 0 catch
+                    } else if(pieceType!=myBoard.at(i).at(z+attackRange)){
+                        return CheckAttack("Do you want to attack?(y, n, yes, no) ");
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 void Attack(std::vector<std::vector<int>> &myBoard, int pieceType){
