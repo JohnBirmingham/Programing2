@@ -1,6 +1,7 @@
-#include <iostream>;
-#include <fstream>;
-#include <vector>;
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <limits>
 
 int getInt(const std::string& prompt) {
 	int input;
@@ -37,6 +38,9 @@ int getDbl(const std::string& prompt) {
 }
 //change
 class Bank {
+private:
+	double amount;
+	std::string filename = "account_balance.txt";
 public:
 	Bank() {
 		amount = 100.00;
@@ -80,9 +84,7 @@ public:
 			amount -= widthdrawAmount;
 		}
 	}
-private:
-	double amount;
-	std::ifstream filename = "account_balance.txt";
+
 };
 
 int menu() {
@@ -91,9 +93,8 @@ int menu() {
 	std::cout << "2. Deposit Money" << std::endl;
 	std::cout << "3. WidthDraw Money" << std::endl;
 	std::cout << "4. Bank" << std::endl;
-	getInt("Enter your choice: ");
+	return getInt("Enter your choice: ");
 }
-void 
 	
 int main() {
 	int result;
@@ -108,7 +109,7 @@ int main() {
 		std::cout << "Your current balance is $" << userAccount.CheckBalance() << "." << std::endl;
 	}
 	while (true) {
-		result = main();
+		result = menu();
 		if (result == 1) {
 			std::cout << "Your current balance is " << userAccount.CheckBalance() << "." << std::endl;
 		}
@@ -126,5 +127,5 @@ int main() {
 		}
 	}
 	userAccount.SaveInfo();
-
+	return 1;
 }
