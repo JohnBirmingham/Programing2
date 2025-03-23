@@ -1,9 +1,15 @@
 #include "game.h"
+Game::Game() {
+    gameBoard.SetUpBoard();
+}
 
-gameBoard.SetUpBoard(myBoard);
-gameBoard.PrintBoard(myBoard);
-int Game::Play(std::vector<int> moveSet, bool attack) {
-    
+int Game::Play(std::vector<int> moveSet, bool attack = false) {
+    if (attack == true) {
+        gameBoard.ChangePoisition(moveSet, blank);
+    }
+    else if (attack == false) {
+        gameBoard.ChangePoisition(moveSet, currentPieceType);
+    }
     int gameState = GameStatus();
     return gameState;
 }
@@ -25,7 +31,8 @@ std::vector<int> Game::CheckNumOfPieces() {
     int P1PieceCount = 0;
     int P2PieceCount = 0;
     int temp = 0;
-    for (std::vector<int> row : gameBoard) {
+    std::vector<std::vector<int>> myBoard{ gameBoard.GiveBoard() };
+    for (std::vector<int> row : myBoard) {
         for (int i : row) {
             if (i == 1) {
                 P1PieceCount++;
@@ -50,38 +57,39 @@ std::vector<std::vector<int>> Game::GetBoard() {
 }
 
 bool Game::ValidAttack() {
-    for (int i = 0; i < gameBoard.size(); i++) {
-        for (int z = 0; z < gameBoard.size(); z++) {
-            if (currentPieceType == gameBoard.at(i).at(z)) {
+    std::vector<std::vector<int>> myBoard{ gameBoard.GiveBoard() };
+    for (int i = 0; i < myBoard.size(); i++) {
+        for (int z = 0; z < myBoard.size(); z++) {
+            if (currentPieceType == myBoard.at(i).at(z)) {
                 if (i - attackRange >= 0) {
-                    if ((blank == gameBoard.at(i - attackRange).at(z))) {
+                    if ((blank == myBoard.at(i - attackRange).at(z))) {
                         //not doing anything. 0 catch
                     }
-                    else if (currentPieceType != gameBoard.at(i - attackRange).at(z)) {
+                    else if (currentPieceType != myBoard.at(i - attackRange).at(z)) {
                         return 1;
                     }
                 }
                 if (i + attackRange < 10) {
-                    if (blank == gameBoard.at(i + attackRange).at(z)) {
+                    if (blank == myBoard.at(i + attackRange).at(z)) {
                         //not doing anything. 0 catch
                     }
-                    else if (currentPieceType != gameBoard.at(i + attackRange).at(z)) {
+                    else if (currentPieceType != myBoard.at(i + attackRange).at(z)) {
                         return 1;
                     }
                 }
                 if (z - attackRange >= 0) {
-                    if (blank == gameBoard.at(i).at(z - attackRange)) {
+                    if (blank == myBoard.at(i).at(z - attackRange)) {
                         //not doing anything. 0 catch
                     }
-                    else if (currentPieceType != gameBoard.at(i).at(z - attackRange)) {
+                    else if (currentPieceType != myBoard.at(i).at(z - attackRange)) {
                         return 1;
                     }
                 }
                 if (z + attackRange < 10) {
-                    if (blank == gameBoard.at(i).at(z + attackRange)) {
+                    if (blank == myBoard.at(i).at(z + attackRange)) {
                         //not doing anything. 0 catch
                     }
-                    else if (currentPieceType != gameBoard.at(i).at(z + attackRange)) {
+                    else if (currentPieceType != myBoard.at(i).at(z + attackRange)) {
                         return 1;
                     }
                 }

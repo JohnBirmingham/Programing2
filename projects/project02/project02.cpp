@@ -2,35 +2,7 @@
 #include <limits>
 #include <cmath>
 #include "game.h"
-/*
-    Make sure that the main includes;
-    std::vector<int> for new space move;
-    std::vector<games> listOfGames;
-    while{
-    while(game==ongoing){
-    Valid Attack Check;
-    Ask if player wants to attack;
-    If player doesn't want to attack then{
-    ask for Move Input;
-    Set a tracker to move;
-    }
-    If player ask to attack{
-    ask for Attack Input;
-    Set a tracker to attack;
-    }
-    If player is want to quit because he is sad{
-    break and shame the player who quit.
-    }
-    }
-    ask if they want to play another game;
-    if no{
-    break;
-    }
-    if yes{
-    listOfGames.push_back;
-    }
-    }
-*/
+
 enum gameState {
     ongoing,
     P1Wins,
@@ -162,11 +134,47 @@ void AttackInput(Game& game) {
         }
     }
 }
-
+/*
+    Make sure that the main includes;
+    std::vector<int> for new space move;
+    std::vector<games> listOfGames;
+    while{
+    while(game==ongoing){
+    Valid Attack Check;
+    Ask if player wants to attack;
+    If player doesn't want to attack then{
+    ask for Move Input;
+    Set a tracker to move;
+    }
+    If player ask to attack{
+    ask for Attack Input;
+    Set a tracker to attack;
+    }
+    If player is want to quit because he is sad{
+    break and shame the player who quit.
+    }
+    }
+    ask if they want to play another game;
+    if no{
+    break;
+    }
+    if yes{
+    listOfGames.push_back;
+    }
+    }
+*/
 int main() {
     bool noMore;
+    int gameStatus;
+    Game Games;
     while (true) {
-        Play();
+        Games;
+        while (gameStatus == ongoing) {
+            if () {
+
+            }
+            Play();
+        }
         noMore = YesNoInput("Do you want to continue? ");
         if (noMore == true) {
             std::cout << "Thank you for playing." << std::endl;

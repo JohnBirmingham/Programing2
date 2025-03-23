@@ -2,10 +2,11 @@
 #include "Board.h"
 class Game {
 private:
-    Board gameBoard;
+    Board gameBoard=Board(10);
     int currentPieceType = White;
     int attackRange = 1;
 public:
+    Game();
     enum gameState {
         ongoing,
         P1Wins,
@@ -16,7 +17,7 @@ public:
         White,
         Black
     };
-    int Play(std::vector<int> moveSet);
+    int Play(std::vector<int> moveSet, bool attack);
     bool ValidAttack();
     int GameStatus();
     std::vector<int> CheckNumOfPieces();
