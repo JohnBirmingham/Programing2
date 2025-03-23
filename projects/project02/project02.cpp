@@ -16,6 +16,34 @@ enum piece {
 
 int attackRange = 1;
 
+int menuInput(std::string prompt, int maxValue) {
+    int input;
+    while (true) {
+        std::cout << prompt;
+        std::cin >> input;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Please enter an integer.\n";
+        }
+        else if (std::cin.peek() != '\n') {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Too many inputs. Please only use one input" << std::endl;
+        }
+        else {
+            if ((0 < input) && (input < maxValue+1)) {
+                return input;
+            }
+            else {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Must be one of the options." << std::endl;
+            }
+        }
+    }
+}
+
 int BoardInput(std::string prompt) {
     int input;
     while (true) {
@@ -61,8 +89,6 @@ std::vector<int> MoveInput(Game& game) {
             std::cout << "Not moving the right piece." << std::endl;
         }
         else if ((2 >= (abs(prevX - newX) + abs(prevY - newY))) && (myBoard.at(newY).at(newX) == blank)) {
-            myBoard.at(newY).at(newX) = myBoard.at(prevY).at(prevX);
-            myBoard.at(prevY).at(prevX) = 0;
             break;
         }
         else {
@@ -105,14 +131,14 @@ bool YesNoInput(std::string prompt) {
     }
 }
 
-void AttackInput(Game& game) {
+std::vector<int> AttackInput(Game& game) {
     int Xopp;
     int Yopp;
     int Xpos;
     int Ypos;
     int pieceType{ game.GetCurrentPiece() };
     std::vector<int> MovePosition;
-    std::vector<std::vector<int>>& myBoard{ game.GetBoard() };
+    std::vector<std::vector<int>> myBoard{ game.GetBoard() };
     while (true) {
         Xpos = BoardInput("Enter the X cordinate you are attacking from: ");
         Ypos = BoardInput("Enter the Y cordinate you are attacking from: ");
@@ -126,56 +152,58 @@ void AttackInput(Game& game) {
             std::cout << "Not a valid enemy" << std::endl;
         }
         else if ((attackRange >= (abs(Xopp - Xpos) + abs(Yopp - Ypos)))) {
-            myBoard.at(Yopp).at(Xopp) = blank;
             break;
         }
         else {
             std::cout << "Invalid attack." << std::endl;
         }
     }
+    MovePosition.push_back(Xpos);
+    MovePosition.push_back(Ypos);
+    return MovePosition;
 }
-/*
-    Make sure that the main includes;
-    std::vector<int> for new space move;
-    std::vector<games> listOfGames;
-    while{
-    while(game==ongoing){
-    Valid Attack Check;
-    Ask if player wants to attack;
-    If player doesn't want to attack then{
-    ask for Move Input;
-    Set a tracker to move;
-    }
-    If player ask to attack{
-    ask for Attack Input;
-    Set a tracker to attack;
-    }
-    If player is want to quit because he is sad{
-    break and shame the player who quit.
-    }
-    }
-    ask if they want to play another game;
-    if no{
-    break;
-    }
-    if yes{
-    listOfGames.push_back;
-    }
-    }
-*/
+
 int main() {
+    bool attackPossible = false;
+    int options;
     bool noMore;
     int gameStatus;
+    std::vector<int> group;
     Game Games;
     while (true) {
-        Games;
         while (gameStatus == ongoing) {
-            if () {
-
+            attackPossible=Games.ValidAttack();
+            if (attackPossible == true) {
+                std::cout << "1. Attack" << std::endl;
+                std::cout << "2. Move" << std::endl;
+                std::cout << "3. End" << std::endl;
+                options = menuInput("Chose which numbered option you want to do? ", 3);
+                if (options == 1) {
+                    group = AttackInput(Games);
+                }
+                else if (options == 2) {
+                    group = MoveInput(Games);
+                }
+                else {
+                    std::cout << "How dare you end this game early." << std::endl;
+                    break;
+                }
             }
-            Play();
+            else {
+                std::cout << "1. Move" << std::endl;
+                std::cout << "2. End" << std::endl;
+                options = menuInput("Chose which numbered option you want to do? ", 2);
+                if (options == 1) {
+                    group = MoveInput(Games);
+                }
+                else {
+                    std::cout << "How dare you end this game early." << std::endl;
+                    break;
+                }
+            }
+            Games.Play(group, attackPossible);
         }
-        noMore = YesNoInput("Do you want to continue? ");
+        noMore = YesNoInput("Do you want to play another? ");
         if (noMore == true) {
             std::cout << "Thank you for playing." << std::endl;
             break;

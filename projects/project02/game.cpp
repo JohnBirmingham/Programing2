@@ -3,7 +3,7 @@ Game::Game() {
     gameBoard.SetUpBoard();
 }
 
-int Game::Play(std::vector<int> moveSet, bool attack = false) {
+int Game::Play(std::vector<int> moveSet, bool attack) {
     if (attack == true) {
         gameBoard.ChangePoisition(moveSet, blank);
     }
