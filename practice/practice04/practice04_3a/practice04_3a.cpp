@@ -2,19 +2,43 @@
 //
 
 #include <iostream>
+#include <list>
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    int intInput;
+    std::string input;
+    std::list<std::string> tasks;
+    int i=1;
+    while (true) {
+        std::cout << "1. Add Task" << std::endl;
+        std::cout << "2. Remove Task" << std::endl;
+        std::cout << "3. Show Tasks" << std::endl;
+        std::cout << "4. Exit" << std::endl;
+        std::cout << "Choice: ";
+        std::cin >> intInput;
+        if (intInput == 1) {
+            std::cout << "Enter task: ";
+            std::cin >> input;
+            tasks.push_back(input);
+            std::cout << "Task added!" << std::endl;
+        }
+        else if (intInput == 2) {
+            std::cout << "Enter task number to remove: ";
+            std::cin >> intInput;
+            auto it = std::next(tasks.begin(), intInput - 1);
+            it=tasks.erase(it);
+            std::cout << "Task removed!" << std::endl;
+        }
+        else if (intInput == 3) {
+            std::cout << "Tasks: " << std::endl;
+            for (auto help: tasks) {
+                std::cout << i << ". " << help << std::endl;
+                i++;
+            }
+        }
+        else if (intInput == 4) {
+            break;
+        }
+    }
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
