@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectGuid>{0A3B6D2A-9082-40B8-B648-B05B3DFF9065}</ProjectGuid>
+    <ProjectGuid>{609FE849-6DE7-44B1-ACAF-2FD079D3F83F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>practice03test</RootNamespace>
+    <RootNamespace>practicetest03</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
@@ -162,7 +162,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="practice03_test.cpp" />
+    <ClCompile Include="practice_test_03.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
