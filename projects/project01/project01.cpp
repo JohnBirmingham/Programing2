@@ -235,13 +235,11 @@ bool CheckAttack(std::string prompt) {
 }
 
 bool ValidAttack(std::vector<std::vector<int>>& myBoard, int pieceType) {
-    int justInCase;
     for (int i = 0; i < myBoard.size(); i++) {
         for (int z = 0; z < myBoard.size(); z++) {
             if (pieceType == myBoard.at(i).at(z)) {
                 if (i - attackRange >= 0) {
-                    if ((blank == myBoard.at(i - attackRange).at(z))) {
-                        justInCase++;
+                    if (blank == myBoard.at(i - attackRange).at(z)) {
                         //not doing anything. 0 catch
                     }
                     else if (pieceType != myBoard.at(i - attackRange).at(z)) {
@@ -250,7 +248,6 @@ bool ValidAttack(std::vector<std::vector<int>>& myBoard, int pieceType) {
                 }
                 if (i + attackRange < 10) {
                     if (blank == myBoard.at(i + attackRange).at(z)) {
-                        justInCase++;
                         //not doing anything. 0 catch
                     }
                     else if (pieceType != myBoard.at(i + attackRange).at(z)) {
@@ -259,7 +256,6 @@ bool ValidAttack(std::vector<std::vector<int>>& myBoard, int pieceType) {
                 }
                 if (z - attackRange >= 0) {
                     if (blank == myBoard.at(i).at(z - attackRange)) {
-                        justInCase++;
                         //not doing anything. 0 catch
                     }
                     else if (pieceType != myBoard.at(i).at(z - attackRange)) {
@@ -268,7 +264,6 @@ bool ValidAttack(std::vector<std::vector<int>>& myBoard, int pieceType) {
                 }
                 if (z + attackRange < 10) {
                     if (blank == myBoard.at(i).at(z + attackRange)) {
-                        justInCase++;
                         //not doing anything. 0 catch
                     }
                     else if (pieceType != myBoard.at(i).at(z + attackRange)) {

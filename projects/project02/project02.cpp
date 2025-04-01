@@ -167,7 +167,7 @@ int main() {
     bool attackPossible = false;
     int options;
     bool noMore;
-    int gameStatus;
+    int gameStatus=ongoing;
     std::vector<int> group;
     Game Games;
     while (true) {
