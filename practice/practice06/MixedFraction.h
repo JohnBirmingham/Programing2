@@ -1,6 +1,5 @@
 #pragma once
 #include "Fraction.h"
-#include <iostream>
 
 class MixedFraction : public Fraction {
 public:

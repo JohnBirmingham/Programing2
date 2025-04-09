@@ -22,36 +22,37 @@ void menu() {
 int main(){
     int choice;
     Fraction currentFrac;
-    Fraction otherFrac;
     while (true) {
         std::cout << "Since your current fraction is " << currentFrac << ".\nWhat do you want to do?\n";
         menu();
         std::cin >> choice;
         if (choice == 1) {
-            currentFrac = FractionInput();
+            Fraction otherFrac = FractionInput();
+            currentFrac.setNumerator(otherFrac.getNumerator());
+            currentFrac.setDenominator(otherFrac.getDenominator());
             std::cout << "Current fraction: " << currentFrac << "\n";
         }
         else if (choice == 2) {
             std::cout << "Enter fraction to add:\n";
-            otherFrac = FractionInput();
+            Fraction otherFrac = FractionInput();
             currentFrac = currentFrac + otherFrac;
             std::cout << "The sum of the fractions is: " << currentFrac << "\n";
         }
         else if (choice == 3) {
             std::cout << "Enter fraction to subtract:\n";
-            otherFrac = FractionInput();
+            Fraction otherFrac = FractionInput();
             currentFrac = currentFrac - otherFrac;
             std::cout << "The difference of the fractions is: " << currentFrac << "\n";
         } 
         else if (choice == 4) {
             std::cout << "Enter fraction to multiply:\n";
-            otherFrac = FractionInput();
+            Fraction otherFrac = FractionInput();
             currentFrac = currentFrac * otherFrac;
             std::cout << "The product of the fractions is: " << currentFrac << "\n";
         }
         else if (choice == 5) {
             std::cout << "Enter fraction to divide by:\n";
-            otherFrac = FractionInput();
+            Fraction otherFrac = FractionInput();
             currentFrac = currentFrac / otherFrac;
             std::cout << "The quotient of the fractions is: " << currentFrac << "\n";
         }

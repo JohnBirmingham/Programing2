@@ -13,10 +13,7 @@ Fraction::Fraction(int fNum, int fDen) {
         den = fDen;
     }
 }
-Fraction::~Fraction() {
-    delete &num;
-    delete &den;
-}
+Fraction::~Fraction() {}
 int Fraction::getNumerator() const {
     return num;
 }

@@ -1,5 +1,5 @@
 #include "MixedFraction.h"
-
+#include <iostream>
 MixedFraction::MixedFraction(const Fraction& frac) : Fraction(frac) {}
 MixedFraction::~MixedFraction() {}
 std::ostream& operator<<(std::ostream& os, const MixedFraction& mf) {
