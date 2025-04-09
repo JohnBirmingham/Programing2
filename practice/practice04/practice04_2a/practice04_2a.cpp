@@ -5,7 +5,7 @@
 
 template <typename T>
 
-T calculate() {
+void calculate() {
     char operation;
     T numOne;
     T numTwo;
@@ -28,13 +28,19 @@ T calculate() {
     else if (operation == '/') {
         std::cout << numOne / numTwo << std::endl;
     }
-    output = 1;
-    return output;
 }
 
 int main()
 {
+    char c;
     while (true) {
-        calculate<double>();
+        std::cout << "Do you want int(i) or a double(d): ";
+        std::cin >> c;
+        if(c == 'i'){
+            calculate<int>();
+        }
+        else if (c == 'd') {
+            calculate<double>();
+        }
     }
 }
