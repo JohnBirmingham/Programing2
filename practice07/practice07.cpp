@@ -1,6 +1,9 @@
+/*  AI has been used in this project to assist in creating the file input system  */
+
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <string>
 
 class Employee {
 private:
@@ -60,18 +63,50 @@ public:
         std::cout << "Type: Commission, ";
         std::cout << "Base Salary: $" << baseSalary << ", ";
         std::cout << "Sales: $" << salesAmount << ", ";
-        std::cout << "Commission Rate" << commissionRate * 100 << ", ";
+        std::cout << "Commission Rate: " << commissionRate * 100 << "%, ";
         std::cout << "Salary: $" << calculateSalary() << std::endl;
     }
 };
-void TakeFileInput(std::vector<Employee*>& employeeList){
-    
+void TakeFileInput(std::vector<Employee*>& employeeList) {
+    std::string filename = "employees.txt";
+    std::ifstream inputFile(filename);
+
+    if (inputFile.is_open()) {
+        std::string type;
+        while (inputFile >> type) {
+            int id;
+            std::string name;
+            if (type == "Salaried") {
+                double salary;
+                inputFile >> id >> name >> salary;
+                employeeList.push_back(new SalariedEmployee(id, name, salary));
+            }
+            else if (type == "Hourly") {
+                double hourlyRate;
+                int hoursWorked;
+                inputFile >> id >> name >> hourlyRate >> hoursWorked;
+                employeeList.push_back(new HourlyEmployee(id, name, hourlyRate, hoursWorked));
+            }
+            else if (type == "Commission") {
+                double baseSalary, salesAmount, commissionRate;
+                inputFile >> id >> name >> baseSalary >> salesAmount >> commissionRate;
+                employeeList.push_back(new CommissionEmployee(id, name, baseSalary, salesAmount, commissionRate));
+            }
+        }
+        inputFile.close();
+    }
+    else {
+        std::cerr << "Unable to open file: " << filename << std::endl;
+    }
 }
+
 int main()
 {
     std::vector<Employee*> employeeList;
-    employeeList.push_back(new HourlyEmployee(102, "John", 20.02, 160));
-    employeeList.at(0)->displayInfo();
+    TakeFileInput(employeeList);
+    for (int i = 0; i < employeeList.size(); i++) {
+        employeeList.at(i)->displayInfo();
+    }
     for (int i = 0; i < employeeList.size(); i++) {
         delete employeeList.at(i);
     }
