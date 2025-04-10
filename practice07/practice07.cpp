@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 class Employee {
 private:
@@ -63,11 +64,15 @@ public:
         std::cout << "Salary: $" << calculateSalary() << std::endl;
     }
 };
-void TakeFileInput(){}
+void TakeFileInput(std::vector<Employee*>& employeeList){
+    
+}
 int main()
 {
     std::vector<Employee*> employeeList;
     employeeList.push_back(new HourlyEmployee(102, "John", 20.02, 160));
     employeeList.at(0)->displayInfo();
-    delete employeeList.at(0);
+    for (int i = 0; i < employeeList.size(); i++) {
+        delete employeeList.at(i);
+    }
 }
