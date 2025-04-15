@@ -40,7 +40,7 @@ classDiagram
         +gameName : string
         +checkedIn : bool
         +personName : string
-        +Game(gameName: string, checkedIn: bool, personName: string)
+        +Game()
     }
 
     class GameTracker {
