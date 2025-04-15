@@ -35,11 +35,12 @@ public:
     void CheckGameOut(int gameNum);
 };
 ```mermaid
+classDiagram
     class Game {
         +gameName : string
         +checkedIn : bool
         +personName : string
-        +Game() : string
+        +Game(gameName: string, checkedIn: bool, personName: string)
     }
 
     class GameTracker {
@@ -50,6 +51,6 @@ public:
         +CheckGameIn(gameNum : int)
         +CheckGameOut(gameNum : int)
     }
- 
+
     GameTracker --> Game : uses
 ```
