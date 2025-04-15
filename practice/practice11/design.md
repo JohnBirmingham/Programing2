@@ -36,20 +36,20 @@ public:
 };
 ```mermaid
     class Game {
-        +string gameName
-        +bool checkedIn
-        +string personName
-        +Game(string gameName, bool checkedIn, string personName)
+        +gameName : string
+        +checkedIn : bool
+        +personName : string
+        +Game() : string
     }
 
     class GameTracker {
-        -list~Game~ gameList
-        +void AddGame(Game& game)
-        +void RemoveGame(int gameNum)
-        +void ListGame() const
-        +void CheckGameIn(int gameNum)
-        +void CheckGameOut(int gameNum)
+        -gameList : list~Game~ 
+        +AddGame(game : Game&)
+        +RemoveGame(gameNum : int)
+        +ListGame()
+        +CheckGameIn(gameNum : int)
+        +CheckGameOut(gameNum : int)
     }
  
-    GameTracker --> Game : manages
+    GameTracker --> Game : uses
 ```
