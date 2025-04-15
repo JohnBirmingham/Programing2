@@ -51,5 +51,5 @@ public:
         +void CheckGameOut(int gameNum)
     }
  
-    GameTracker --> Game : uses
+    GameTracker --> Game : manages
 ```
