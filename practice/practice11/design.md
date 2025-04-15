@@ -35,22 +35,21 @@ public:
     void CheckGameOut(int gameNum);
 };
 ```mermaid
-class Game {
-    +string gameName;
-    +bool checkedIn;
-    +string personName;
-    +Game(std::string gameName, bool checkedIn, std::string personName);
-};
- 
-// GameTracker.h
-class GameTracker {
-    -std::list<Game> gameList;
-    +void AddGame(const Game& game);
-    +void RemoveGame(int gameNum);
-    +void ListGame() const;
-    +void CheckGameIn(int gameNum);
-    +void CheckGameOut(int gameNum);
-};
+    class Game {
+        +string gameName
+        +bool checkedIn
+        +string personName
+        +Game(string gameName, bool checkedIn, string personName)
+    }
+
+    class GameTracker {
+        -list~Game~ gameList
+        +void AddGame(Game& game)
+        +void RemoveGame(int gameNum)
+        +void ListGame() const
+        +void CheckGameIn(int gameNum)
+        +void CheckGameOut(int gameNum)
+    }
  
     GameTracker --> Game : uses
 ```
