@@ -1,3 +1,7 @@
+/*
+ I used your code to assisit in getting my project further along the game logic and majority of game functions is of my own design the rest can find a base in the code you created.
+*/
+
 #define SDL_MAIN_HANDLED
 #include <iostream>
 #include <SDL2/SDL.h>
